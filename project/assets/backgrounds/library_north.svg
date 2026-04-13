@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#2f2330"/>
+  <rect y="520" width="1280" height="200" fill="#58424d"/>
+  <rect x="120" y="120" width="220" height="360" fill="#4d3747"/>
+  <rect x="940" y="120" width="220" height="360" fill="#4d3747"/>
+  <rect x="470" y="210" width="340" height="220" fill="#6a5060"/>
+  <rect x="540" y="410" width="200" height="70" fill="#3e2b34"/>
+  <circle cx="640" cy="130" r="20" fill="#ffd37a"/>
+  <text x="640" y="645" fill="#f7e7cc" font-size="32" text-anchor="middle">북측 시야 - 책상과 메인 서가</text>
+</svg>

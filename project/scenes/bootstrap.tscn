@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://47ij4040a7he"]
+
+[ext_resource type="Script" uid="uid://bc7spk8qu20u8" path="res://project/scripts/bootstrap.gd" id="1_5ytqa"]
+
+[node name="Bootstrap" type="Control" unique_id=565760708]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5ytqa")

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#2f2633"/>
+  <rect y="520" width="1280" height="200" fill="#574552"/>
+  <rect x="160" y="110" width="260" height="320" fill="#6f6271"/>
+  <rect x="190" y="140" width="200" height="260" fill="#9b8ca2"/>
+  <rect x="760" y="120" width="260" height="360" fill="#413144"/>
+  <rect x="1080" y="220" width="80" height="180" fill="#5e4958"/>
+  <text x="640" y="645" fill="#f7e7cc" font-size="32" text-anchor="middle">서측 시야 - 창문과 난방기</text>
+</svg>

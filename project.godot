@@ -1,0 +1,38 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
+[application]
+
+config/name="괴담 도서관 MVP"
+run/main_scene="res://project/scenes/bootstrap.tscn"
+config/features=PackedStringArray("4.6")
+config/icon="res://project/assets/ui/icon.svg"
+
+[autoload]
+
+GameState="*res://project/autoload/game_state.gd"
+SaveManager="*res://project/autoload/save_manager.gd"
+ContentDB="*res://project/autoload/content_db.gd"
+SceneRouter="*res://project/autoload/scene_router.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"

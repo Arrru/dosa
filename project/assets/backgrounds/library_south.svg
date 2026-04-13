@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#281f2d"/>
+  <rect y="520" width="1280" height="200" fill="#4f404b"/>
+  <rect x="200" y="190" width="210" height="220" fill="#6b5566"/>
+  <rect x="450" y="190" width="210" height="220" fill="#5f4a59"/>
+  <rect x="700" y="190" width="210" height="220" fill="#54414f"/>
+  <rect x="1010" y="220" width="150" height="140" fill="#7c6678"/>
+  <text x="640" y="645" fill="#f7e7cc" font-size="32" text-anchor="middle">남측 시야 - 서랍과 침낭</text>
+</svg>

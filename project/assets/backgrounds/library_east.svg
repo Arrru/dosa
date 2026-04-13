@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#2b2130"/>
+  <rect y="520" width="1280" height="200" fill="#503f49"/>
+  <rect x="140" y="110" width="350" height="390" fill="#47364a"/>
+  <rect x="760" y="130" width="300" height="330" fill="#3f2f44"/>
+  <rect x="860" y="220" width="140" height="180" fill="#8c6a82"/>
+  <circle cx="860" cy="160" r="18" fill="#ffd37a"/>
+  <text x="640" y="645" fill="#f7e7cc" font-size="32" text-anchor="middle">동측 시야 - 금서 서가와 괴이 손님</text>
+</svg>
