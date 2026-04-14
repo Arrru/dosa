@@ -102,7 +102,7 @@ func _build_summary(slot_id: int, data: Dictionary, has_data: bool) -> Dictionar
 	return {
 		"slot_id": slot_id,
 		"has_data": has_data,
-		"player_name": String(data.get("player_name", "빈 슬롯")),
+		"player_name": String(data.get("player_name", "빈 Slot")),
 		"day_number": int(data.get("day_number", 1)),
 		"phase_name": GameState.PHASES[int(data.get("phase_index", 0))] if has_data else "미사용",
 		"affection": int(data.get("affection", {}).get("catalog_warden", 0)) if has_data else 0

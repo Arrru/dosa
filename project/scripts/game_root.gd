@@ -404,7 +404,7 @@ func _on_save_pressed() -> void:
 	if _is_overlay_open():
 		return
 	if SaveManager.save_current_game():
-		notice_label.text = "슬롯 %d에 저장했습니다." % GameState.current_slot_id
+		notice_label.text = "Slot %d에 저장했습니다." % GameState.current_slot_id
 	else:
 		notice_label.text = "저장에 실패했습니다. 브라우저 저장소 또는 파일 쓰기 권한을 확인하세요."
 

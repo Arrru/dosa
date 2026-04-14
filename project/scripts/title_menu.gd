@@ -180,7 +180,7 @@ func _on_continue() -> void:
 func _on_records() -> void:
 	var overview := SaveManager.get_progress_overview()
 	var lines: Array[String] = []
-	lines.append("[b]사용 중인 슬롯[/b] %d / 3" % overview["used_slots"])
+	lines.append("[b]사용 중인 Slot[/b] %d / 3" % overview["used_slots"])
 	lines.append("[b]최고 진행 일차[/b] %d일차" % overview["best_day"])
 	lines.append("[b]최고 호감도[/b] %d" % overview["highest_affection"])
 	lines.append("[b]누적 도감 해금[/b] %d개" % overview["unique_codex_count"])
@@ -190,9 +190,9 @@ func _on_records() -> void:
 	if overview["slot_details"].is_empty():
 		lines.append("\n아직 근무기록이 없습니다. 새 게임으로 첫 근무를 시작하세요.")
 	else:
-		lines.append("\n[b]슬롯별 기록[/b]")
+		lines.append("\n[b]Slot별 기록[/b]")
 		for detail in overview["slot_details"]:
-			lines.append("- 슬롯 %d | %s | %d일차 %s | 도감 %d / 메뉴얼 %d" % [detail["slot_id"], detail["player_name"], detail["day_number"], detail["phase_name"], detail["codex_count"], detail["manual_count"]])
+			lines.append("- Slot %d | %s | %d일차 %s | 도감 %d / 메뉴얼 %d" % [detail["slot_id"], detail["player_name"], detail["day_number"], detail["phase_name"], detail["codex_count"], detail["manual_count"]])
 	_show_overlay("근무기록", "지금까지 남긴 근무 로그와 프로토타입 진행 요약입니다.", "\n".join(lines))
 
 
