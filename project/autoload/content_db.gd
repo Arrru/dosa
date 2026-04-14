@@ -126,7 +126,7 @@ var dialogue_data := {
 	"arrival_intro_followup": {
 		"speaker": "카탈로그 감시자",
 		"portrait": PORTRAIT_WARDEN,
-		"text": "신입 사서인가. 규칙을 모르면 먹히고, 규칙만 따르면 이용당하지. 오늘 밤 전까지는 눈치껏 버텨 봐.",
+		"text": "신입 사서인가.\n규칙을 모르면 먹히고, 규칙만 따르면 이용당하지.\n 오늘 밤 전까지는 눈치껏 버텨 봐.",
 		"choices": [
 			{"text": "예의를 갖춰 인사한다.", "effects": {"affection": {"catalog_warden": 1}}},
 			{"text": "조용히 고개만 끄덕인다.", "effects": {"skills": {"empathy": 1}}}
@@ -135,7 +135,7 @@ var dialogue_data := {
 	"desk_manual": {
 		"speaker": "책상 위 매뉴얼",
 		"portrait": "",
-		"text": "첫 장에는 이렇게 적혀 있다. '손님이 먼저 이름을 묻더라도, 먼저 대답하지 말 것.'",
+		"text": "첫 장에는 이렇게 적혀 있다.\n'손님이 먼저 이름을 묻더라도, 먼저 대답하지 말 것.'",
 		"choices": [
 			{"text": "매뉴얼을 읽고 정리한다.", "effects": {"unlock_manual": ["rules_001"], "skills": {"research": 1}, "spend_time": 1}},
 			{"text": "책상 서랍을 더듬는다.", "effects": {"unlock_manual": ["rules_002"], "spend_time": 1}}
@@ -144,7 +144,7 @@ var dialogue_data := {
 	"cart_flavor": {
 		"speaker": "리어카",
 		"portrait": "",
-		"text": "반납된 책들이 묘하게 젖어 있다. 물인지, 침인지, 다른 무엇인지는 확인하고 싶지 않다.",
+		"text": "반납된 책들이 묘하게 젖어 있다.\n 물인지, 침인지, 다른 무엇인지는 확인하고 싶지 않다.",
 		"choices": [
 			{"text": "차분히 분류한다.", "effects": {"skills": {"research": 1}, "spend_time": 1}},
 			{"text": "모른 척 덮어둔다.", "effects": {"spend_time": 1}}
@@ -171,7 +171,7 @@ var dialogue_data := {
 	"warden_encounter": {
 		"speaker": "카탈로그 감시자",
 		"portrait": PORTRAIT_WARDEN,
-		"text": "오늘의 손님을 잘 넘기면 살아남을 거야. 잘 보이고 싶다면, 어떤 책을 건네야 하는지도 알아야겠지.",
+		"text": "오늘의 손님을 잘 넘기면 살아남을 거야.\n 잘 보이고 싶다면, 어떤 책을 건네야 하는지도 알아야겠지.",
 		"choices": [
 			{"text": "추천서를 부탁한다.", "effects": {"affection": {"catalog_warden": 1}, "skills": {"empathy": 1}, "spend_time": 1}},
 			{"text": "업무 요령부터 묻는다.", "effects": {"unlock_manual": ["rules_003"], "skills": {"research": 1}, "spend_time": 1}},

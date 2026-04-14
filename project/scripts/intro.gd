@@ -64,7 +64,7 @@ func _build_ui() -> void:
 	body.size = Vector2(760, 120)
 	body.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	body.text = "본 작품의 배경과 설정은 허구입니다.\n 당신은 수상한 계약 조건에 이끌려 도서관에 취직한 신입 사서로서, 규칙을 익히고 기묘한 손님들 사이에서 살아남아야 합니다."
+	body.text = "본 작품의 배경과 설정은 허구입니다.\n 당신은 수상한 계약 조건에 이끌려 도서관에 취직한 신입 사서로서,\n규칙을 익히고 기묘한 손님들 사이에서 살아남아야 합니다."
 	add_child(body)
 	fallback_nodes.append(body)
 
@@ -95,7 +95,7 @@ func _build_ui() -> void:
 func _try_play_intro_video() -> bool:
 	if not ResourceLoader.exists(INTRO_VIDEO_PATH):
 		video_notice_label.visible = true
-		video_notice_label.text = "웹 브라우저로 접근하여 인트로 영상이 스킵됩니다.\n"
+		video_notice_label.text = "\n\n웹 브라우저로 접근하여 인트로 영상이 스킵됩니다.\n"
 		return false
 	video_player = VideoStreamPlayer.new()
 	video_player.anchor_right = 1.0
@@ -144,7 +144,6 @@ func _on_flicker_timeout() -> void:
 func _on_continue_pressed() -> void:
 	status_label.text = "도서관의 문이 열린다..."
 	SceneRouter.to_title_menu()
-
 
 func _on_video_finished() -> void:
 	SceneRouter.to_title_menu()
