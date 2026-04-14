@@ -95,7 +95,7 @@ func _build_ui() -> void:
 func _try_play_intro_video() -> bool:
 	if not ResourceLoader.exists(INTRO_VIDEO_PATH):
 		video_notice_label.visible = true
-		video_notice_label.text = "인트로 영상이 없어 대체 인트로를 표시합니다. intro.ogv를 추가하면 영상이 먼저 재생됩니다."
+		video_notice_label.text = "웹 브라우저로 접근하여 인트로 영상이 스킵됩니다.\n"
 		return false
 	video_player = VideoStreamPlayer.new()
 	video_player.anchor_right = 1.0
