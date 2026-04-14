@@ -8,9 +8,11 @@ var status_label: Label
 var flicker_timer: Timer
 var continue_button: Button
 var fallback_nodes: Array[CanvasItem] = []
+
 var video_player: VideoStreamPlayer
 var video_notice_label: Label
-
+var waiting_for_web_video_start := false
+var video_started := false
 
 func _ready() -> void:
 	UI_THEME_HELPER.apply_ui_theme(self)
@@ -107,9 +109,20 @@ func _try_play_intro_video() -> bool:
 	for node in fallback_nodes:
 		node.visible = false
 	video_notice_label.visible = true
+	if SaveManager.is_web_environment():
+		waiting_for_web_video_start = true
+		video_notice_label.text = "클릭하거나 Enter/Space를 눌러 인트로 영상을 시작하세요."
+	else:
+		_start_video_playback()
+	return true
+	
+func _start_video_playback() -> void:
+	if video_player == null or video_started:
+		return
+	video_started = true
+	waiting_for_web_video_start = false
 	video_notice_label.text = "인트로 영상을 재생 중입니다. Enter/Space로 건너뛸 수 있습니다."
 	video_player.play()
-	return true
 
 
 func _start_flicker() -> void:
@@ -140,6 +153,14 @@ func _on_video_finished() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if video_player == null:
 		return
+	if waiting_for_web_video_start:
+		if event.is_action_pressed("ui_accept"):
+			_start_video_playback()
+			return
+		if event is InputEventMouseButton and event.pressed:
+			_start_video_playback()
+			return
+			
 	if event.is_action_pressed("ui_accept"):
 		_on_video_finished()
 		return
