@@ -36,6 +36,7 @@ window/stretch/aspect="expand"
 [gui]
 
 theme/custom="res://project/assets/fonts/ui_theme.tres"
+theme/custom_font="uid://carr4icwjky5j"
 
 [rendering]
 
