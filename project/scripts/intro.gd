@@ -1,7 +1,7 @@
 extends Control
 
 const INTRO_VIDEO_PATH := "res://project/assets/video/intro.ogv"
-const UI_THEME:= "res://project/assets/fonts/ui_theme.tres"
+#const UI_THEME:= "res://project/assets/fonts/ui_theme.tres"
 
 var flame: ColorRect
 var status_label: Label
@@ -13,7 +13,7 @@ var video_notice_label: Label
 
 
 func _ready() -> void:
-	theme = load(UI_THEME)
+	#theme = load(UI_THEME)
 	_build_ui()
 	if not _try_play_intro_video():
 		_start_flicker()

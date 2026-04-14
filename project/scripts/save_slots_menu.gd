@@ -1,10 +1,10 @@
 extends Control
 
 var message_label: Label
-const UI_THEME:= "res://project/assets/fonts/ui_theme.tres"
+#const UI_THEME:= "res://project/assets/fonts/ui_theme.tres"
 
 func _ready() -> void:
-	theme = load(UI_THEME)
+	#theme = load(UI_THEME)
 	_build_ui()
 
 

@@ -1,13 +1,14 @@
 extends Control
 
-const UI_THEME:= "res://project/assets/fonts/ui_theme.tres"
+#const UI_THEME:= "res://project/assets/fonts/ui_theme.tres"
 var input_line: LineEdit
 var status_label: Label
 var confirm_stage := 0
 
 
 func _ready() -> void:
-	theme = load(UI_THEME)
+	
+	#theme = load(UI_THEME)
 	_build_ui()
 
 

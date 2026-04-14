@@ -1,6 +1,6 @@
 extends Control
 
-const UI_THEME:= "res://project/assets/fonts/ui_theme.tres"
+#const UI_THEME:= "res://project/assets/fonts/ui_theme.tres"
 
 var info_label: Label
 var overlay_panel: PanelContainer
@@ -11,7 +11,7 @@ var overlay_hint_label: Label
 
 
 func _ready() -> void:
-	theme = load(UI_THEME)
+	#theme = load(UI_THEME)
 	_build_ui()
 
 
