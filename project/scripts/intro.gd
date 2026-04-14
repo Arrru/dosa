@@ -93,9 +93,10 @@ func _build_ui() -> void:
 
 
 func _try_play_intro_video() -> bool:
+	if OS.has_feature("web"):                                                                                                         
+	# 재생이 실패하고 화면이 멈출 수 있으므로 항상 폴백 애니메이션을 사용함                                
+		return false                                                                                         
 	if not ResourceLoader.exists(INTRO_VIDEO_PATH):
-		video_notice_label.visible = true
-		video_notice_label.text = "\n\n웹 브라우저로 접근하여 인트로 영상이 스킵됩니다.\n"
 		return false
 	video_player = VideoStreamPlayer.new()
 	video_player.anchor_right = 1.0

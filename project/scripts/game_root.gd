@@ -391,8 +391,14 @@ func _set_portrait(path: String) -> void:
 	var has_portrait := false
 	if not path.is_empty():
 		if ResourceLoader.exists(path):
-			portrait_rect.texture = load(path)
-			has_portrait = portrait_rect.texture != null
+			#portrait_rect.texture = load(path)
+			#has_portrait = portrait_rect.texture != null
+			var tex := ResourceLoader.load(path, "Texture2D", ResourceLoader.CACHE_MODE_REUSE)                   
+			if tex is Texture2D:                                                                               
+				portrait_rect.texture = tex                                                                 
+				has_portrait = true                                                                              
+			else:
+				portrait_rect.texture = null
 		else:
 			portrait_rect.texture = null
 	else:
