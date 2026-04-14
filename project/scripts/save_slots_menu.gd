@@ -1,7 +1,7 @@
 extends Control
 
-var message_label: Label
 const UI_THEME_HELPER := preload("res://project/scripts/ui_theme_helper.gd")
+var message_label: Label
 
 
 func _ready() -> void:
@@ -45,7 +45,7 @@ func _build_ui() -> void:
 
 	var back := Button.new()
 	back.text = "뒤로"
-	back.custom_minimum_size = Vector2(0, 44)
+	back.custom_minimum_size = Vector2(0, 64) if UI_THEME_HELPER.is_mobile() else Vector2(0, 44)
 	back.pressed.connect(SceneRouter.to_title_menu)
 	root.add_child(back)
 

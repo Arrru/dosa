@@ -92,7 +92,7 @@ func _build_ui() -> void:
 func _add_menu_button(layout: VBoxContainer, text: String, callback: Callable) -> void:
 	var button := Button.new()
 	button.text = text
-	button.custom_minimum_size = Vector2(0, 48)
+	button.custom_minimum_size = Vector2(0, 64) if UI_THEME_HELPER.is_mobile() else Vector2(0, 48)
 	button.pressed.connect(callback)
 	layout.add_child(button)
 

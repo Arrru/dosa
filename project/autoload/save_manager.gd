@@ -7,10 +7,16 @@ func is_web_environment() -> bool:
 	return OS.has_feature("web")
 
 
+func is_mobile_environment() -> bool:
+	return OS.has_feature("mobile") or OS.has_feature("android") or OS.has_feature("ios")
+
+
 func get_persistence_warning() -> String:
-	if not is_web_environment():
-		return ""
-	return "웹 버전의 저장은 브라우저 저장소를 사용합니다. 사생활 보호 모드, 저장공간 차단, 사이트 데이터 삭제 시 세이브가 유지되지 않을 수 있습니다."
+	if is_web_environment():
+		return "웹 버전의 저장은 브라우저 저장소를 사용합니다. 사생활 보호 모드, 저장공간 차단, 사이트 데이터 삭제 시 세이브가 유지되지 않을 수 있습니다."
+	if is_mobile_environment():
+		return "모바일 버전의 저장은 앱 전용 저장소를 사용합니다. 앱 삭제 또는 데이터 초기화 시 세이브가 삭제됩니다."
+	return ""
 
 
 func get_slot_path(slot_id: int) -> String:

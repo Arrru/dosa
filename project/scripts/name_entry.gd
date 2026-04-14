@@ -6,10 +6,53 @@ var input_line: LineEdit
 var status_label: Label
 var confirm_stage := 0
 
+var _panel: PanelContainer
+const _PANEL_BASE_Y := 170.0
+var _kb_prev_height := 0.0
+
 
 func _ready() -> void:
 	UI_THEME_HELPER.apply_ui_theme(self)
 	_build_ui()
+	if UI_THEME_HELPER.is_mobile():
+		input_line.focus_entered.connect(_on_input_focused)
+		input_line.focus_exited.connect(_on_input_unfocused)
+	set_process(false)
+
+
+func _on_input_focused() -> void:
+	set_process(true)
+
+
+func _on_input_unfocused() -> void:
+	set_process(false)
+	_kb_prev_height = 0.0
+	_panel.position.y = _PANEL_BASE_Y
+
+
+func _process(_delta: float) -> void:
+	if not DisplayServer.has_feature(DisplayServer.FEATURE_VIRTUAL_KEYBOARD):
+		set_process(false)
+		return
+	var kb_physical: int = DisplayServer.virtual_keyboard_get_height()
+	var kb_h := float(kb_physical)
+	if kb_h == _kb_prev_height:
+		return
+	_kb_prev_height = kb_h
+	if kb_h <= 0.0:
+		_panel.position.y = _PANEL_BASE_Y
+		return
+	# Convert physical keyboard height to canvas/logical pixels.
+	# get_final_transform().get_scale().y gives the current viewport stretch scale.
+	var scale_y := get_viewport().get_final_transform().get_scale().y
+	if scale_y <= 0.0:
+		return
+	var kb_canvas := kb_h / scale_y
+	var viewport_h := get_viewport_rect().size.y
+	var panel_h := _panel.size.y
+	var available_y := viewport_h - kb_canvas
+	var target_y := available_y - panel_h - 12.0
+	_panel.position.y = clamp(target_y, 8.0, _PANEL_BASE_Y)
 
 
 func _build_ui() -> void:
@@ -19,10 +62,10 @@ func _build_ui() -> void:
 	background.color = Color("171218")
 	add_child(background)
 
-	var panel := PanelContainer.new()
-	panel.size = Vector2(560, 360)
-	panel.position = Vector2(360, 170)
-	add_child(panel)
+	_panel = PanelContainer.new()
+	_panel.size = Vector2(560, 360)
+	_panel.position = Vector2(360, _PANEL_BASE_Y)
+	add_child(_panel)
 
 	var layout := VBoxContainer.new()
 	layout.offset_left = 24
@@ -32,7 +75,7 @@ func _build_ui() -> void:
 	layout.anchor_right = 1.0
 	layout.anchor_bottom = 1.0
 	layout.add_theme_constant_override("separation", 14)
-	panel.add_child(layout)
+	_panel.add_child(layout)
 
 	var title := Label.new()
 	title.text = "이름 입력"
@@ -54,15 +97,17 @@ func _build_ui() -> void:
 	status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	layout.add_child(status_label)
 
+	var btn_h := 60.0 if UI_THEME_HELPER.is_mobile() else 46.0
+
 	var confirm_button := Button.new()
 	confirm_button.text = "확인"
-	confirm_button.custom_minimum_size = Vector2(0, 46)
+	confirm_button.custom_minimum_size = Vector2(0, btn_h)
 	confirm_button.pressed.connect(_on_confirm_pressed)
 	layout.add_child(confirm_button)
 
 	var cancel_button := Button.new()
 	cancel_button.text = "취소"
-	cancel_button.custom_minimum_size = Vector2(0, 46)
+	cancel_button.custom_minimum_size = Vector2(0, btn_h)
 	cancel_button.pressed.connect(func() -> void: SceneRouter.to_save_slots("new"))
 	layout.add_child(cancel_button)
 

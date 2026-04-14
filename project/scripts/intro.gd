@@ -159,9 +159,15 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event is InputEventMouseButton and event.pressed:
 			_start_video_playback()
 			return
-			
+		if event is InputEventScreenTouch and event.pressed:
+			_start_video_playback()
+			return
+
 	if event.is_action_pressed("ui_accept"):
 		_on_video_finished()
 		return
 	if event is InputEventMouseButton and event.pressed:
+		_on_video_finished()
+		return
+	if event is InputEventScreenTouch and event.pressed:
 		_on_video_finished()

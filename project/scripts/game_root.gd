@@ -25,6 +25,17 @@ var current_collection_entries: Array = []
 var last_day_number := -1
 var last_phase_index := -1
 
+# Touch/swipe navigation
+var _touch_start: Vector2 = Vector2.ZERO
+var _touch_active: bool = false
+const _SWIPE_THRESHOLD: float = 60.0
+
+# Portrait display
+var portrait_rect: TextureRect
+var dialogue_margin: MarginContainer
+var dialogue_layout: VBoxContainer
+var _portrait_mode: bool = false
+
 
 func _ready() -> void:
 	UI_THEME_HELPER.apply_ui_theme(self)
@@ -102,7 +113,8 @@ func _build_ui() -> void:
 	notice_label.size = Vector2(400, 80)
 	notice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	notice_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	notice_label.text = SaveManager.get_persistence_warning() if SaveManager.is_web_environment() else "수상한 부분을 조사하여 이벤트를 진행하세요."
+	var persistence_warning := SaveManager.get_persistence_warning()
+	notice_label.text = persistence_warning if not persistence_warning.is_empty() else "수상한 부분을 조사하여 이벤트를 진행하세요."
 	add_child(notice_label)
 
 	_add_nav_button("← 좌", Vector2(24, 288), _on_go_left)
@@ -121,6 +133,7 @@ func _build_ui() -> void:
 	_add_menu_bar_button(menu_bar, "휴식", _on_rest_pressed)
 	_add_menu_bar_button(menu_bar, "타이틀", _on_title_pressed)
 
+	_build_portrait_display()
 	_build_dialogue_overlay()
 	_build_collection_overlay()
 
@@ -129,7 +142,7 @@ func _add_nav_button(text: String, position: Vector2, callback: Callable) -> voi
 	var button := Button.new()
 	button.text = text
 	button.position = position
-	button.size = Vector2(72, 44)
+	button.size = Vector2(88, 64) if UI_THEME_HELPER.is_mobile() else Vector2(72, 44)
 	button.pressed.connect(callback)
 	add_child(button)
 
@@ -137,9 +150,18 @@ func _add_nav_button(text: String, position: Vector2, callback: Callable) -> voi
 func _add_menu_bar_button(menu_bar: HBoxContainer, text: String, callback: Callable) -> void:
 	var button := Button.new()
 	button.text = text
-	button.custom_minimum_size = Vector2(72, 36)
+	button.custom_minimum_size = Vector2(88, 52) if UI_THEME_HELPER.is_mobile() else Vector2(72, 36)
 	button.pressed.connect(callback)
 	menu_bar.add_child(button)
+
+
+func _build_portrait_display() -> void:
+	portrait_rect = TextureRect.new()
+	portrait_rect.position = Vector2(485.0, 20.0)
+	portrait_rect.size = Vector2(310.0, 420.0)
+	portrait_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	portrait_rect.visible = false
+	add_child(portrait_rect)
 
 
 func _build_dialogue_overlay() -> void:
@@ -149,40 +171,55 @@ func _build_dialogue_overlay() -> void:
 	dialogue_overlay.visible = false
 	add_child(dialogue_overlay)
 
-	var margin := MarginContainer.new()
-	margin.anchor_right = 1.0
-	margin.anchor_bottom = 1.0
-	margin.offset_left = 24
-	margin.offset_top = 24
-	margin.offset_right = -24
-	margin.offset_bottom = -24
-	dialogue_overlay.add_child(margin)
+	dialogue_margin = MarginContainer.new()
+	dialogue_margin.anchor_right = 1.0
+	dialogue_margin.anchor_bottom = 1.0
+	dialogue_margin.offset_left = 24
+	dialogue_margin.offset_top = 24
+	dialogue_margin.offset_right = -24
+	dialogue_margin.offset_bottom = -24
+	dialogue_overlay.add_child(dialogue_margin)
 
-	var layout := VBoxContainer.new()
-	layout.anchor_right = 1.0
-	layout.anchor_bottom = 1.0
-	layout.add_theme_constant_override("separation", 12)
-	margin.add_child(layout)
+	dialogue_layout = VBoxContainer.new()
+	dialogue_layout.anchor_right = 1.0
+	dialogue_layout.anchor_bottom = 1.0
+	dialogue_layout.add_theme_constant_override("separation", 12)
+	dialogue_margin.add_child(dialogue_layout)
 
 	dialogue_name_label = Label.new()
 	dialogue_name_label.add_theme_font_size_override("font_size", 28)
-	layout.add_child(dialogue_name_label)
+	dialogue_layout.add_child(dialogue_name_label)
 
 	dialogue_text_label = RichTextLabel.new()
 	dialogue_text_label.fit_content = false
 	dialogue_text_label.scroll_active = true
 	dialogue_text_label.custom_minimum_size = Vector2(0, 220)
-	layout.add_child(dialogue_text_label)
+	dialogue_layout.add_child(dialogue_text_label)
+
+	var choice_scroll := ScrollContainer.new()
+	choice_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	choice_scroll.custom_minimum_size = Vector2(0,0)
+	choice_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	dialogue_layout.add_child(choice_scroll)
 
 	choice_container = VBoxContainer.new()
+	choice_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	choice_container.add_theme_constant_override("separation", 8)
-	layout.add_child(choice_container)
-
+	choice_scroll.add_child(choice_container)
+	var close_row := HBoxContainer.new() 
+	close_row.alignment = BoxContainer.ALIGNMENT_END                                                                    
+	dialogue_layout.add_child(close_row)                                                                     
+																											
+	#var close_spacer := Control.new()                                                                 
+	#close_spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL                                            
+	#close_row.add_child(close_spacer)                                                                        
+							   
 	var close_button := Button.new()
 	close_button.text = "닫기"
-	close_button.custom_minimum_size = Vector2(0, 40)
-	close_button.pressed.connect(func() -> void: dialogue_overlay.visible = false)
-	layout.add_child(close_button)
+	close_button.custom_minimum_size = Vector2(76, 28)
+	close_button.pressed.connect(_close_dialogue)
+	#dialogue_layout.add_child(close_button)
+	close_row.add_child(close_button)
 
 
 func _build_collection_overlay() -> void:
@@ -190,6 +227,9 @@ func _build_collection_overlay() -> void:
 	collection_overlay.position = Vector2(240, 120)
 	collection_overlay.size = Vector2(800, 480)
 	collection_overlay.visible = false
+	var _col_style := StyleBoxFlat.new()                                                                     
+	_col_style.bg_color = Color.BLACK                                                                      
+	collection_overlay.add_theme_stylebox_override("panel", _col_style)       
 	add_child(collection_overlay)
 
 	var margin := MarginContainer.new()
@@ -222,6 +262,9 @@ func _build_collection_overlay() -> void:
 
 	var list_panel := PanelContainer.new()
 	list_panel.custom_minimum_size = Vector2(220, 320)
+	var _list_style := StyleBoxFlat.new()                                                                    
+	_list_style.bg_color = Color.BLACK                                                                
+	list_panel.add_theme_stylebox_override("panel", _list_style)
 	content_row.add_child(list_panel)
 
 	var list_margin := MarginContainer.new()
@@ -242,6 +285,10 @@ func _build_collection_overlay() -> void:
 	var detail_panel := PanelContainer.new()
 	detail_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	detail_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	
+	var _detail_style := StyleBoxFlat.new()                                                                  
+	_detail_style.bg_color = Color.BLACK                                                              
+	detail_panel.add_theme_stylebox_override("panel", _detail_style)  
 	content_row.add_child(detail_panel)
 
 	var detail_margin := MarginContainer.new()
@@ -340,27 +387,70 @@ func _on_hotspot_pressed(hotspot_id: String) -> void:
 		_show_dialogue(String(hotspot["dialogue_id"]))
 
 
+func _set_portrait(path: String) -> void:
+	var has_portrait := false
+	if not path.is_empty():
+		if ResourceLoader.exists(path):
+			portrait_rect.texture = load(path)
+			has_portrait = portrait_rect.texture != null
+		else:
+			portrait_rect.texture = null
+	else:
+		portrait_rect.texture = null
+	portrait_rect.visible = has_portrait
+	_portrait_mode = has_portrait
+	if _portrait_mode:
+		# Portrait visible in center — dialogue moves to bottom strip
+		dialogue_overlay.position = Vector2(0.0, 450.0)
+		dialogue_overlay.size = Vector2(1280.0, 270.0)
+		dialogue_margin.offset_left = 16
+		dialogue_margin.offset_top = 12
+		dialogue_margin.offset_right = -16
+		dialogue_margin.offset_bottom = -12
+		dialogue_layout.add_theme_constant_override("separation", 8)
+		dialogue_text_label.custom_minimum_size = Vector2(0.0, 50.0)
+	else:
+		# Full-screen dialogue overlay
+		dialogue_overlay.position = Vector2(180.0, 120.0)
+		dialogue_overlay.size = Vector2(920.0, 500.0)
+		dialogue_margin.offset_left = 24
+		dialogue_margin.offset_top = 24
+		dialogue_margin.offset_right = -24
+		dialogue_margin.offset_bottom = -24
+		dialogue_layout.add_theme_constant_override("separation", 12)
+		dialogue_text_label.custom_minimum_size = Vector2(0.0, 220.0)
+
+
+func _close_dialogue() -> void:
+	dialogue_overlay.visible = false
+	portrait_rect.visible = false
+	portrait_rect.texture = null
+	_portrait_mode = false
+
+
 func _show_dialogue(dialogue_id: String) -> void:
 	var data := ContentDB.get_dialogue(dialogue_id)
 	if data.is_empty():
 		return
 	GameState.mark_dialogue_seen(dialogue_id)
+	_set_portrait(String(data.get("portrait", "")))
 	dialogue_overlay.visible = true
 	dialogue_name_label.text = String(data.get("speaker", ""))
 	dialogue_text_label.text = String(data.get("text", ""))
 	for child in choice_container.get_children():
 		child.queue_free()
+	var choice_h := 40.0 if _portrait_mode else 54.0
 	for choice in data.get("choices", []):
 		var button := Button.new()
 		button.text = String(choice.get("text", "계속"))
-		button.custom_minimum_size = Vector2(0, 54)
+		button.custom_minimum_size = Vector2(0, choice_h)
 		button.pressed.connect(_on_choice_pressed.bind(choice))
 		choice_container.add_child(button)
 	if choice_container.get_child_count() == 0:
 		var close_button := Button.new()
 		close_button.text = "확인"
 		close_button.custom_minimum_size = Vector2(0, 48)
-		close_button.pressed.connect(func() -> void: dialogue_overlay.visible = false)
+		close_button.pressed.connect(_close_dialogue)
 		choice_container.add_child(close_button)
 
 
@@ -372,7 +462,7 @@ func _on_choice_pressed(choice: Dictionary) -> void:
 	if not next_id.is_empty():
 		_show_dialogue(next_id)
 	else:
-		dialogue_overlay.visible = false
+		_close_dialogue()
 	_refresh_ui()
 	_update_progress_notice(previous_day, previous_phase)
 	_check_ending_stub()
@@ -452,6 +542,31 @@ func _get_collection_mode_text(title: String) -> String:
 	if title == "도감":
 		return "관찰 기록과 단서 메모를 열람합니다.\n좌측 탭에서 항목을 골라 상세 내용을 확인하세요."
 	return "업무 지침과 생존 규칙을 열람합니다.\n좌측 탭처럼 항목을 골라 세부 페이지를 읽을 수 있습니다."
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventScreenTouch:
+		if event.pressed:
+			_touch_start = event.position
+			_touch_active = true
+		else:
+			if _touch_active:
+				_touch_active = false
+				_handle_swipe(event.position - _touch_start)
+
+
+func _handle_swipe(delta: Vector2) -> void:
+	if _is_overlay_open():
+		return
+	var ax : float = abs(delta.x)
+	var ay : float = abs(delta.y)
+	if ax < _SWIPE_THRESHOLD and ay < _SWIPE_THRESHOLD:
+		return
+	if ax >= ay:
+		_change_view("right" if delta.x < 0.0 else "left")
+	else:
+		if delta.y < 0.0:
+			_change_view("down")
 
 
 func _on_collection_item_selected(index: int) -> void:
