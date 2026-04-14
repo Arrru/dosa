@@ -1,6 +1,6 @@
 extends Control
 
-#const UI_THEME:= "res://project/assets/fonts/ui_theme.tres"
+const UI_THEME_HELPER := preload("res://project/scripts/ui_theme_helper.gd")
 
 var background_rect: ColorRect
 var floor_rect: ColorRect
@@ -27,7 +27,7 @@ var last_phase_index := -1
 
 
 func _ready() -> void:
-	#theme = load(UI_THEME)
+	UI_THEME_HELPER.apply_ui_theme(self)
 	_build_ui()
 	if not GameState.state_changed.is_connected(_refresh_ui):
 		GameState.state_changed.connect(_refresh_ui)

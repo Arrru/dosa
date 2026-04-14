@@ -1,14 +1,14 @@
 extends Control
 
-#const UI_THEME:= "res://project/assets/fonts/ui_theme.tres"
+const UI_THEME_HELPER := preload("res://project/scripts/ui_theme_helper.gd")
+
 var input_line: LineEdit
 var status_label: Label
 var confirm_stage := 0
 
 
 func _ready() -> void:
-	
-	#theme = load(UI_THEME)
+	UI_THEME_HELPER.apply_ui_theme(self)
 	_build_ui()
 
 
