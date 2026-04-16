@@ -15,3 +15,11 @@ export_credentials.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+# Claude Code internal state
+.omc/state/
+
+# CI build artifacts
+godot
+godot.zip
+templates.tpz
