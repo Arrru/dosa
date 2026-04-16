@@ -62,9 +62,6 @@ jobs:
           mkdir -p docs
           ./godot --headless --path . --export-release "Web" "$(pwd)/docs/index.html"
 
-      - name: Restore CNAME
-        run: echo "www.mysterylibrary_dosa.com" > docs/CNAME
-
       - name: Commit & Push
         run: |
           git config user.name "github-actions[bot]"
