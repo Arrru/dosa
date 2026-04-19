@@ -57,7 +57,7 @@ func _build_ui() -> void:
 	panel.add_child(layout)
 
 	var title := Label.new()
-	title.text = "괴담 도서관(도사)"
+	title.text = "진설기담"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 36)
 	layout.add_child(title)

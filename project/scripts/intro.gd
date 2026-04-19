@@ -55,7 +55,7 @@ func _build_ui() -> void:
 	title.size = Vector2(800, 80)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 38)
-	title.text = "괴담 도서관(도사)"
+	title.text = "진설기담"
 	add_child(title)
 	fallback_nodes.append(title)
 
