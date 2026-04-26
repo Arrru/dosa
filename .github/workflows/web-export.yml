@@ -57,6 +57,35 @@ jobs:
           mv templates/* ~/.local/share/godot/export_templates/${{ env.GODOT_VERSION }}.stable/
           rm -rf templates templates.tpz godot.zip
 
+      - name: Fetch novel scenes from mapping-dosa
+        run: |
+          mkdir -p project/scenes/novel
+          python3 - <<'EOF'
+import urllib.request, json, os, sys
+
+api_url = "https://api.github.com/repos/Arrru/mapping-dosa/contents/scenes"
+try:
+    req = urllib.request.Request(
+        api_url,
+        headers={"Accept": "application/vnd.github+json", "User-Agent": "dosa-ci"}
+    )
+    with urllib.request.urlopen(req, timeout=15) as resp:
+        data = json.loads(resp.read())
+    if not isinstance(data, list):
+        print("mapping-dosa: scenes 폴더 없음 - 건너뜀")
+        sys.exit(0)
+    count = 0
+    for f in data:
+        if f["name"].endswith(".json") and f.get("download_url"):
+            dest = os.path.join("project/scenes/novel", f["name"])
+            urllib.request.urlretrieve(f["download_url"], dest)
+            print(f"다운로드: {f['name']}")
+            count += 1
+    print(f"총 {count}개 씬 다운로드 완료")
+except Exception as e:
+    print(f"mapping-dosa scenes 다운로드 실패 (무시됨): {e}")
+EOF
+
       - name: Export Web Build
         run: |
           mkdir -p docs

@@ -232,6 +232,28 @@ var dialogue_data := {
 			{"text": "지금은 버틴다.", "effects": {}}
 		]
 	},
+	# --- 둘째날 이후 변형 대화 ---
+	# 네이밍 규칙: {기존_dialogue_id}_day{N}
+	# game_root.gd가 현재 day_number에 맞는 ID를 자동으로 찾고, 없으면 기존 대화로 fallback
+	"warden_encounter_day2": {
+		"speaker": "카탈로그 감시자",
+		"portrait": PORTRAIT_WARDEN,
+		"text": "이틀째군. 아직 살아있다는 게 신기하네.\n오늘은 조금 더 까다로운 손님이 올 거야. 준비해.",
+		"choices": [
+			{"text": "각오를 다진다.", "effects": {"skills": {"nerve": 1}, "spend_time": 1}},
+			{"text": "어떤 손님인지 물어본다.", "effects": {"affection": {"catalog_warden": 1}, "unlock_codex": ["warden_profile"], "spend_time": 1}},
+			{"text": "괜찮다고 답한다.", "effects": {"skills": {"empathy": 1}, "spend_time": 1}}
+		]
+	},
+	"desk_manual_day2": {
+		"speaker": "책상 위 매뉴얼",
+		"portrait": "",
+		"text": "두 번째 장에는 이렇게 적혀 있다.\n'밤에 이름을 불리거든, 세 번째는 대답하지 말 것.'",
+		"choices": [
+			{"text": "규칙을 옮겨 적는다.", "effects": {"unlock_manual": ["rules_005"], "skills": {"research": 1}, "spend_time": 1}},
+			{"text": "이미 외웠다.", "effects": {"skills": {"nerve": 1}}}
+		]
+	},
 	"ending_stub": {
 		"speaker": "카탈로그 감시자",
 		"portrait": PORTRAIT_WARDEN,

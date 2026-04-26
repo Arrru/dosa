@@ -6,6 +6,7 @@ const TITLE_MENU_SCENE := "res://project/scenes/title_menu.tscn"
 const SAVE_MENU_SCENE := "res://project/scenes/save_slots_menu.tscn"
 const NAME_ENTRY_SCENE := "res://project/scenes/name_entry.tscn"
 const GAME_SCENE := "res://project/scenes/game_root.tscn"
+const NOVEL_PLAYER_SCENE := "res://project/scenes/novel_player.tscn"
 
 
 func to_intro() -> void:
@@ -28,3 +29,7 @@ func to_name_entry(slot_id: int) -> void:
 
 func to_game() -> void:
 	get_tree().call_deferred("change_scene_to_file", GAME_SCENE)
+
+
+func to_novel_player() -> void:
+	get_tree().call_deferred("change_scene_to_file", NOVEL_PLAYER_SCENE)

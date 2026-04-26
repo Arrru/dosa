@@ -383,8 +383,32 @@ func _on_hotspot_pressed(hotspot_id: String) -> void:
 		return
 	var hotspot := ContentDB.get_hotspot(hotspot_id)
 	notice_label.text = "%s 조사 중" % hotspot["label"]
-	if hotspot.has("dialogue_id"):
-		_show_dialogue(String(hotspot["dialogue_id"]))
+	if not hotspot.has("dialogue_id"):
+		return
+	var base_id := String(hotspot["dialogue_id"])
+	var novel_path := _find_novel_scene(base_id)
+	if not novel_path.is_empty():
+		GameState.flags["pending_novel_scene"] = novel_path
+		SceneRouter.to_novel_player()
+	else:
+		_show_dialogue(_resolve_dialogue_id(base_id))
+
+
+func _find_novel_scene(base_id: String) -> String:
+	var day_path := "res://project/scenes/novel/%s_day%d.json" % [base_id, GameState.day_number]
+	if FileAccess.file_exists(day_path):
+		return day_path
+	var base_path := "res://project/scenes/novel/%s.json" % base_id
+	if FileAccess.file_exists(base_path):
+		return base_path
+	return ""
+
+
+func _resolve_dialogue_id(base_id: String) -> String:
+	var day_id := "%s_day%d" % [base_id, GameState.day_number]
+	if not ContentDB.get_dialogue(day_id).is_empty():
+		return day_id
+	return base_id
 
 
 func _set_portrait(path: String) -> void:
