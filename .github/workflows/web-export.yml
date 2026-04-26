@@ -8,6 +8,8 @@ on:
       - 'export_presets.cfg'
       - 'project.godot'
   workflow_dispatch:
+  repository_dispatch:
+    types: [scenes-updated]
 
 permissions:
   contents: write
